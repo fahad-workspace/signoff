@@ -25,6 +25,30 @@ public class Book {
         return value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return getNoFirst().equals(book.getNoFirst()) && getTypeFirst().equals(book.getTypeFirst()) &&
+                getRevisionFirst().equals(book.getRevisionFirst()) && getByFirst().equals(book.getByFirst()) &&
+                getNoSecond().equals(book.getNoSecond()) && getTypeSecond().equals(book.getTypeSecond()) &&
+                getRevisionSecond().equals(book.getRevisionSecond()) && getBySecond().equals(book.getBySecond());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getNoFirst().hashCode();
+        result = 31 * result + getTypeFirst().hashCode();
+        result = 31 * result + getRevisionFirst().hashCode();
+        result = 31 * result + getByFirst().hashCode();
+        result = 31 * result + getNoSecond().hashCode();
+        result = 31 * result + getTypeSecond().hashCode();
+        result = 31 * result + getRevisionSecond().hashCode();
+        result = 31 * result + getBySecond().hashCode();
+        return result;
+    }
+
     public String getNoFirst() {
         return noFirst;
     }

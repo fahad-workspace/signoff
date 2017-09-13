@@ -39,8 +39,8 @@ public class ExcelReaderUtil {
         return null;
     }
 
-    public Map<String, Book> readBooksFromExcelFile(String excelFilePath) throws IOException {
-        LinkedHashMap<String, Book> mapBooks = new LinkedHashMap<>();
+    public List<Book> readBooksFromExcelFile(String excelFilePath) throws IOException {
+        List<Book> listBooks = new ArrayList<>();
         FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
         Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet firstSheet = workbook.getSheetAt(0);
@@ -79,22 +79,21 @@ public class ExcelReaderUtil {
                         // do nothing
                 }
             }
-            mapBooks.put(aBook.getNoFirst(), aBook);
+            listBooks.add(aBook);
         }
         workbook.close();
         inputStream.close();
-        return mapBooks;
+        return listBooks;
     }
 
-    public List<Book> processBooks(Map<String, Book> mapBooks) {
+    public List<Book> processBooks(List<Book> books) {
         List<Book> listBooks = new ArrayList<>();
-        for (Map.Entry<String, Book> book : mapBooks.entrySet()) {
-            Book aBook = book.getValue();
+        for (Book aBook : books) {
             if (aBook.getNoSecond() == null || aBook.getNoSecond().length() == 0) {
                 setSecondHalfValues(listBooks, aBook);
                 continue;
             }
-            Book bBook = mapBooks.get(aBook.getNoSecond());
+            Book bBook = findBook(books, aBook.getNoSecond());
             if (bBook != null) {
                 Book cBook = Book.getCopiedBookInstance(aBook);
                 cBook.setTypeSecond(bBook.getTypeFirst());
@@ -106,6 +105,16 @@ public class ExcelReaderUtil {
         }
         return listBooks;
     }
+
+    private Book findBook(List<Book> books, String noSecond) {
+        for (Book aBook : books) {
+            if (aBook.getNoFirst().equalsIgnoreCase(noSecond)) {
+                return aBook;
+            }
+        }
+        return null;
+    }
+
 
     public void writeBooksFromExcelFile(String inputExcelFilePath, String outputExcelFilePath, List<Book> listBooks)
             throws IOException {
@@ -203,4 +212,11 @@ public class ExcelReaderUtil {
         }
     }
 
+    public List<Book> removeDuplicate(List<Book> listBooks) {
+        Set set = new LinkedHashSet();
+        List<Book> returnBooks = new ArrayList<>();
+        set.addAll(listBooks);
+        returnBooks.addAll(set);
+        return returnBooks;
+    }
 }
