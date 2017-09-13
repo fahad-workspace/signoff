@@ -115,6 +115,14 @@ public class ExcelReaderUtil {
         return null;
     }
 
+    public List<Book> removeDuplicate(List<Book> listBooks) {
+        Set<Book> set = new LinkedHashSet<>();
+        List<Book> returnBooks = new ArrayList<>();
+        set.addAll(listBooks);
+        returnBooks.addAll(set);
+        return returnBooks;
+    }
+
 
     public void writeBooksFromExcelFile(String inputExcelFilePath, String outputExcelFilePath, List<Book> listBooks)
             throws IOException {
@@ -212,11 +220,4 @@ public class ExcelReaderUtil {
         }
     }
 
-    public List<Book> removeDuplicate(List<Book> listBooks) {
-        Set<Book> set = new LinkedHashSet<>();
-        List<Book> returnBooks = new ArrayList<>();
-        set.addAll(listBooks);
-        returnBooks.addAll(set);
-        return returnBooks;
-    }
 }
