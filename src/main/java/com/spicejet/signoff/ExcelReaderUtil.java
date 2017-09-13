@@ -213,7 +213,7 @@ public class ExcelReaderUtil {
     }
 
     public List<Book> removeDuplicate(List<Book> listBooks) {
-        Set set = new LinkedHashSet();
+        Set<Book> set = new LinkedHashSet<>();
         List<Book> returnBooks = new ArrayList<>();
         set.addAll(listBooks);
         returnBooks.addAll(set);
